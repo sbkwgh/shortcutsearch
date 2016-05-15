@@ -17,8 +17,14 @@
 
 	function getShortcut(URL) {
 		var index = URL.lastIndexOf('!');
-		var shortcut = URL.slice(index);
-		var expansion = getExpansion(shortcut);
+		var shortcut, expansion;
+		if(URL.match(/(?:^|\s)(\![a-z]+)(?=\s|$)/i)) {
+			shortcut = URL.match(/(?:^|\s)(\![a-z]+)(?=\s|$)/i)[1]
+		} else {
+			shortcut = URL.slice(index);
+		}
+
+		expansion = getExpansion(shortcut);
 		
 		if(index === -1 || !expansion) {
 			location.href = 'https://encrypted.google.com/search?hl=en&q=' + URL;
