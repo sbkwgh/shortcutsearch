@@ -1,0 +1,31 @@
+<script type="text/javascript">
+	function redirect(expansion, query) {
+		var URL = expansion.replace('__QUERY__', query);
+		location.href = URL;
+	}
+
+	function getExpansion(shortcutName) {
+		var shortcut = JSON.parse(localStorage.getItem('shortcuts') || '{}')[shortcutName];
+		var defaults = JSON.parse(localStorage.getItem('defaults') || '{}')[shortcutName];
+
+		if(shortcut) {
+			return shortcut;
+		} else {
+			return defaults;
+		}
+	}
+
+	function getShortcut(URL) {
+		var index = URL.lastIndexOf('!');
+		var shortcut = URL.slice(index);
+		var expansion = getExpansion(shortcut);
+		
+		if(index === -1 || !expansion) {
+			location.href = 'https://encrypted.google.com/search?hl=en&q=' + URL;
+		} else if(expansion) {
+			redirect(expansion.expansion, URL.slice(0, index));
+		}
+		
+	}
+	getShortcut(location.hash.slice(1));
+</script>

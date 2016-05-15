@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "version": "1.0",
+  "name": "!Shortcut search",
+  "options_page": "/extension/options.html",
+  "chrome_settings_overrides": {
+    "name": "!Shortcut search",
+    "search_provider": {
+        "name": "",
+        "search_url": "http://localhost:3000/redirect#{searchTerms}",
+        "keyword": "shrtcut",
+        "favicon_url": "http://localhost:3000/public/img/favicon.ico",
+        "encoding": "UTF-8",
+        "is_default": true
+    }
+  },
+  "background": {
+    "scripts": ["/extension/background.js"],
+    "persistent": false
+  },
+  "icons": {
+    "32": "/extension/img/icon32.png",
+    "128": "/extension/img/icon128.png" 
+  }
+} 

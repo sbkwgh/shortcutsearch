@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="/public/style/style.css">
+	<link rel="stylesheet" type="text/css" href="/public/style/tooltip.css">
+	<link rel="shortcut icon" href="/public/img/icon32.png">
+	<title>!Shortcut search</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div class="modal">
+		<div class="modal-top_bar">
+			<span class="modal-top_bar-title">Add a new shortcut</span>
+			<span class="modal-top_bar-close">&times;</span>
+		</div>
+		<div class="modal-content">
+			<div id='shortcut_form'>
+					Enter the shorthand for your shortcut:<br/>
+					<input type='text' id="shortcut_form-shortcut" placeholder='e.g. !w for wikipedia' />
+				<p>
+					Enter the address which your shortcut will use to search:<br/>
+					<input type="text" id="shortcut_form-expansion" placeholder="e.g. http://en.wikipedia.org/w/index.php?search=__QUERY__" />
+				</p>
+				<p>
+					Enter the site name for your shortcut (optional):<br/>
+					<input type="text" id="shortcut_form-site" placeholder="e.g. Wikipedia" />
+				</p>
+				<p>
+					<input type="button" id="shortcut_form_submit" class="button btn-green" value="Add" />
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<header>
+		<div title='Add new shortcut' id='add_shortcut-holder'>
+			<span>+</span>
+		</div>
+		<div title='Settings' onclick="location.hash='settings'" id='settings_shortcut-holder'>
+			<span>&#x2699;</span>
+		</div>
+		<div title="Return to homepage" onclick="location.hash=''">
+			<img src='/public/img/logo.png' />
+			<span>!Shortcut search</span>
+		</div>
+		<div id="search_box">
+			<span>&#x1f50d;</span>
+			<input type="text" placeholder="Search for your shortcuts" />
+		</div>
+	</header>
+	<div id='container'>
+		<div id='app'></div>
+	</div>
+
+	<script type="text/template" data-template='redirect/:URL'>
+	</script>
+	<script type="text/template" data-template='search/:query'>
+	</script>
+	<script type="text/template" data-template='index'>
+		{{#unless anyShortcuts}}
+			<div class="message_box">
+				<h1>{{noneFound.title}}</h1>
+				<span>{{noneFound.message}}</span>
+			</div>
+		{{else}}
+			<p class='message_box'>
+				To use a shortcut simply enter a search query in the OmniBox bar, then add the shortcut at the end.
+				e.g. <span class="pre pre-bold">google chrome !w</span> takes you to the Wikipedia entry for Chrome
+				<br/>To add your own shortcut click the <span class="pre pre-bold">+</span> button
+			</p>
+			<table>
+				<thead>
+					<tr>
+					 <td>Shortcut</td>
+					 <td>Site</td>
+					 <td>Expansion</td>
+					 <td></td>
+					</tr>
+					<tr></tr>
+				</thead>
+				<tbody>
+					<tr></tr>
+					{{#if shortcuts.length}}
+						<tr class="table-sub_header"><td colspan="4">Your shortcuts</td></tr>
+						<tr></tr>
+					{{/if}}
+				{{#each shortcuts}}
+					<tr>
+						<td>{{this.shortcut}}</td>
+						<td>{{this.site}}</td>
+						<td>{{this.expansion}}</td>
+						<td title="Delete this shortcut">&times;</td>
+					</tr>
+					<tr></tr>
+				{{/each}}
+				{{#if defaults.length}}
+					<tr class="table-sub_header"><td colspan="4">Default shortcuts</td></tr>
+					<tr></tr>
+				{{/if}}
+				{{#each defaults}}
+					<tr data-default="true">
+						<td>{{this.shortcut}}</td>
+						<td>{{this.site}}</td>
+						<td>{{this.expansion}}</td>
+						<td title="Delete this shortcut">&times;</td>
+					</tr>
+					<tr></tr>
+				{{/each}}
+				</tbody>
+			</table>
+		{{/unless}}
+	</script>
+
+	<script type="text/template" data-template="settings">
+		<h1 class="title">Settings</h1>
+		<p>
+			<div class='button btn-normal' id='settings-restore_defaults'>Restore default shortcuts</div><br/>
+			This restores all default shortcuts which you have removed
+		</p>
+		<p>
+			<div class='button btn-normal btn-red' id='settings-delete_shortcuts'>Delete all custom shortcuts</div><br/>
+			This deletes all custom shortcuts
+		</p>
+		<p>
+			<div class='button btn-red btn-normal' id='settings-reset'>Reset all shortcuts</div><br/>
+			This deletes all custom shortcuts, and restores all default shortcuts
+		</p>
+		
+	</script>
+
+	<script type="text/javascript" src="/public/scripts/handlebars.js"></script>
+	<script type="text/javascript" src="/public/scripts/request.js"></script>
+	<script type="text/javascript" src="/public/scripts/router.js"></script>
+	<script type="text/javascript" src="/public/scripts/tooltip.js"></script>
+	<script type="text/javascript" src="/public/scripts/script.js"></script>
+</body>
+</html>
