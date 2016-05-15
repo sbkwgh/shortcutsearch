@@ -7,9 +7,9 @@
     "name": "!Shortcut search",
     "search_provider": {
         "name": "",
-        "search_url": "http://localhost:3000/redirect#{searchTerms}",
+        "search_url": "https://shortcutsearch.herokuapp.com/redirect#{searchTerms}",
         "keyword": "shrtcut",
-        "favicon_url": "http://localhost:3000/public/img/favicon.ico",
+        "favicon_url": "https://shortcutsearch.herokuapp.com/public/img/favicon.ico",
         "encoding": "UTF-8",
         "is_default": true
     }

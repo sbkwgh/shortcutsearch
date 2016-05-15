@@ -1,1 +1,1 @@
-location.href = 'http://localhost:3000/'
+location.href = 'https://shortcutsearch.herokuapp.com/'
