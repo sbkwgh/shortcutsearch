@@ -16,6 +16,8 @@
 	}
 
 	function getShortcut(URL) {
+		URL = decodeURI(location.hash.slice(1));
+
 		var index = URL.lastIndexOf('!');
 		var shortcut, expansion, search;
 
