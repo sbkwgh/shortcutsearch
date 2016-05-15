@@ -29,11 +29,6 @@
 		}
 
 		expansion = getExpansion(shortcut);
-
-		console.log(expansion)
-		console.log(search || URL.slice(0, index))
-
-		return;
 		
 		if(index === -1 || !expansion) {
 			location.href = 'https://encrypted.google.com/search?hl=en&q=' + URL;
