@@ -11,13 +11,16 @@ app.use('/public', express.static('public'));
 
 app.get('/', function(req, res) {
 	res.sendFile(path.join(__dirname, './public', 'index.html'));
-})
+});
+app.get('/googleac10c630c73587c2.html', function(req, res) {
+	res.sendFile(path.join(__dirname, './public', 'googleac10c630c73587c2.html'));
+});
 app.get('/redirect', function(req, res) {
 	res.sendFile(path.join(__dirname, './public', 'redirect.html'));
-})
+});
 app.get('/api/shortcuts', function(req, res) {
 	res.json(shortcuts);
-})
+});
 
 if(!process.env.PRODUCTION) app.use(require('morgan')('dev'));
 
