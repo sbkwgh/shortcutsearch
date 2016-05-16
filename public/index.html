@@ -34,11 +34,16 @@
 	</div>
 
 	<header>
-		<div title='Add new shortcut' id='add_shortcut-holder'>
-			<span>+</span>
-		</div>
-		<div title='Settings' onclick="location.hash='settings'" id='settings_shortcut-holder'>
-			<span>&#x2699;</span>
+		<div id='shortcuts-holder'>
+			<div title='Add new shortcut' class='shortcut-holder' id='add_shortcut-holder'>
+				<span>+</span>
+			</div>
+			<div title='Settings' onclick="location.hash='settings'" class='shortcut-holder'  id='settings_shortcut-holder'>
+				<span>&#x2699;</span>
+			</div>
+			<div title='FAQ' onclick="location.hash='faq'" class='shortcut-holder' id='faq_shortcut-holder'>
+				<span>?</span>
+			</div>
 		</div>
 		<div title="Return to homepage" onclick="location.hash=''">
 			<img src='/public/img/logo.png' />
@@ -55,6 +60,27 @@
 
 	<script type="text/template" data-template='search/:query'>
 	</script>
+	<script type="text/template" data-template='faq'>
+		<h1>Faq</h1>
+		<h3>Is this secure, and can you see what I'm searching?</h3>
+		<p style='padding-left: 1rem;'>
+			Your searches are never sent to the server - all the redirection is done on the client side (your computer).
+			In addition, the search query is taken from the hash of a URL - a part of the URL which the browser never sends to the server. The connection is also encrypted so should be safe from prying eyes.
+		</p>
+		<h3>How do I update the default shortcut list?</h3>
+		<p style='padding-left: 1rem;'>
+			To update the list of default shortcuts from the server, simply visit the homepage again and they will be downloaded from the server. The default list is not update on the rediect page for faster searching.
+		</p>
+		<h3>How do I add my own shortcuts?</h3>
+		<p style='padding-left: 1rem;'>
+			Simply click the '+' icon at the top and follow the instructions (click on each text box to show instructions).
+		</p>
+		<h3>Can I get auto-suggestions for what I search?</h3>
+		<p style='padding-left: 1rem;'>
+			Not at the moment, but this feature is being worked on and will be added in the future.
+		</p>
+	</script>
+
 	<script type="text/template" data-template='index'>
 		{{#unless anyShortcuts}}
 			<div class="message_box">

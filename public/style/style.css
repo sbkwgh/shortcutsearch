@@ -59,17 +59,18 @@ header {
 		cursor: pointer;
 		font-size: 3rem;
 	}
-	header #add_shortcut-holder,
-	header #settings_shortcut-holder {
+	header #shortcuts-holder {
 		position: absolute;
-		left: 2rem;
+		left: 1rem;
 		height: 5rem;
 		top: 0px;
 		display: flex;
 		align-items: center;
 	}
-		header #add_shortcut-holder span,
-		header #settings_shortcut-holder span {
+	header .shortcut-holder {
+		margin-left: 1rem;
+	}
+		header .shortcut-holder span {
 			cursor: pointer;
 			border-radius: 50%;
 			background-color: rgb(255, 129, 151);
@@ -83,26 +84,24 @@ header {
 
 			transition: all 0.2s ease;
 		}
-			header #add_shortcut-holder span:hover,
-			header #settings_shortcut-holder span:hover {
+			header .shortcut-holder span:hover {
 				background-color: rgb(251, 114, 138);
 				box-shadow: 0px 2px 0.25rem rgb(192, 12, 95);
 			}
-			header #add_shortcut-holder span:active,
-			header #settings_shortcut-holder span:hover {
+			header .shortcut-holder span:active {
 				box-shadow: 0px 2px 0.1rem rgba(192, 12, 95, 0.6);
 			}
-		header #settings_shortcut-holder {
-			left: 5.5rem;
-			font-size: 2.125rem;
-			text-decoration: none;
-			line-height: 0;
-		}
-			header #settings_shortcut-holder:visited,
-			header #settings_shortcut-holder:active,
-			header #settings_shortcut-holder:hover {
+			header .shortcut-holder span:visited {
 				color: #fff;
 			}
+		header #settings_shortcut-holder {
+			font-size: 2.125rem;
+			line-height: 1rem;
+		}
+		header #faq_shortcut-holder {
+			font-size: 2.125rem;
+		}
+			
 
 .modal {
 	width: 37rem;

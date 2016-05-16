@@ -195,6 +195,10 @@ document.querySelector('#search_box input').addEventListener('click', function()
 });
 
 
+App.addRoute('/faq', function(templateContainer, templateHTML, data) {
+	templateContainer.innerHTML = templateHTML;
+});
+
 App.addRoute('/search/:query', function(templateContainer, templateHTML, data) {
 	var template = Handlebars.compile(document.querySelector('script[data-template="index"]').innerHTML);
 	var query = data.query.toLowerCase();
