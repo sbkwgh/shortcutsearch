@@ -131,27 +131,6 @@ function downloadDefaults() {
 }
 downloadDefaults();
 
-function redirect(expansion, query) {
-	var URL = expansion.replace('__QUERY__', query);
-	location.href = URL;
-}
-
-function getShortcut(URL) {
-	var index = URL.lastIndexOf('!');
-	var shortcut = URL.slice(index);
-	var expansion = Store.get('shortcuts')[shortcut];
-
-	if(index === -1 || !expansion) {
-		location.href = 'https://encrypted.google.com/search?hl=en&q=' + URL;
-	} else if(expansion) {
-		redirect(expansion.expansion, URL.slice(0, index));
-	}
-	
-}
-
-App.addRoute('/redirect/:URL', function(templateContainer, templateHTML, data) {
-	getShortcut(data.URL);
-});
 
 App.addRoute('/settings', function(templateContainer, templateHTML, data) {
 	var template = Handlebars.compile(templateHTML);
