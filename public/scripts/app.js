@@ -1,3 +1,5 @@
+Handlebars = require('./src/handlebars.js');
+
 var Router = require('./src/router.js');
 var Request = require('./src/request.js');
 var Store = require('./src/store.js');
