@@ -193,3 +193,5 @@ var Model = {
 		return modelFactory;
 	}
 };
+
+module.exports = Request;

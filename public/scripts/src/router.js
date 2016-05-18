@@ -120,3 +120,5 @@ var Router = function(templateContainer) {
 		}
 	}
 };
+
+module.exports = Router;

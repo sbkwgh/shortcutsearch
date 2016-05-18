@@ -140,3 +140,5 @@ Tooltip.onClick = function(querySelector, text, primaryButtonObject, secondaryBu
 		}
 	})
 }
+
+module.exports = Tooltip;
