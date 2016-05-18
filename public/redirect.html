@@ -20,10 +20,12 @@
 
 		var index = URL.lastIndexOf('!');
 		var shortcut, expansion, search;
+		var middle = false;
 
 		if(URL.match(/(?:^|\s)(\![a-z]+)(?=\s|$)/i)) {
 			shortcut = URL.match(/(?:^|\s)(\![a-z]+)(?=\s|$)/i)[1];
 			search = URL.replace(/\s+\![a-z]+\s+/i, ' ');
+			middle = true;
 		} else {
 			shortcut = URL.slice(index);
 		}
@@ -33,7 +35,11 @@
 		if(index === -1 || !expansion) {
 			location.href = 'https://encrypted.google.com/search?hl=en&q=' + URL;
 		} else if(expansion) {
-			redirect(expansion.expansion, search || URL.slice(0, index));
+			if(middle) {
+				redirect(expansion.expansion, search);
+			} else {
+				redirect(expansion.expansion, URL.slice(0, index));
+			}
 		}
 		
 	}
