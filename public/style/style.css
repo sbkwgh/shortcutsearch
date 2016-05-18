@@ -9,6 +9,15 @@ html, body {
 	box-sizing: border-box;
 }
 input {outline: none;}
+.noselect {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
 .pre {
 	font-family: monospace;
 	white-space: pre;
