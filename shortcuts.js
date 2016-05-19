@@ -18,5 +18,9 @@ module.exports = {
 	'!gi': {
 		site: 'google images',
 		expansion: 'https://encrypted.google.com/search?q=__QUERY__&tbm=isch'
+	},
+	'!wkt': {
+		site: 'wiktionary',
+		expansion: 'https://en.wiktionary.org/w/index.php?search=__QUERY__&title=Special%3ASearch'
 	}
 };

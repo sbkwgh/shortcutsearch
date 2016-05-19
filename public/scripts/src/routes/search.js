@@ -32,6 +32,15 @@ module.exports = function(templateContainer, templateHTML, data) {
 		}
 	}
 
+	[defaultsArr, shortcutsArr].forEach(function(item) {
+		item.sort(function(a,b) {
+			var a = (a.shortcut[0] === '!') ? a.shortcut.slice(1) : a.shortcut;
+			var b = (b.shortcut[0] === '!') ? b.shortcut.slice(1) : b.shortcut;
+
+			return a.localeCompare(b);
+		});
+	});
+
 	templateContainer.innerHTML = template({
 		'anyShortcuts': shortcutsArr.length || defaultsArr.length,
 		'shortcuts':shortcutsArr,
