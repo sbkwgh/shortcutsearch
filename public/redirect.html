@@ -16,9 +16,8 @@
 	if(URL.match(/(?:^|\s)(\![a-z]+)(?=\s|$)/i)) {
 		shortcut = URL.match(/(?:^|\s)(\![a-z]+)(?=\s|$)/i)[1];
 		search = URL.replace(new RegExp('(?:^|\\s)' + shortcut + '(?=\\s|$)', 'i'), '');
+		search = search.trimLeft();
 	}
-
-	search = search.trimLeft();
 
 	expansion = getExpansion(shortcut);
 
