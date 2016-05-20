@@ -9,6 +9,7 @@
         "name": "",
         "search_url": "https://shortcutsearch.herokuapp.com/redirect#{searchTerms}",
         "keyword": "shrtcut",
+        "suggest_url": "https://clients1.google.co.uk/complete/search?client=chrome&output=chrome&hl=en-US&q={searchTerms}",
         "favicon_url": "https://shortcutsearch.herokuapp.com/public/img/favicon.ico",
         "encoding": "UTF-8",
         "is_default": true

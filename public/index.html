@@ -5,11 +5,12 @@
 	<link rel="stylesheet" type="text/css" href="/public/style/style.css">
 	<link rel="stylesheet" type="text/css" href="/public/style/tooltip.css">
 	<link rel="shortcut icon" href="/public/img/icon32.png">
-	<title>!Shortcut search</title>
+	<title>!ShortcutSearch</title>
 	<meta charset="UTF-8">
 </head>
 <body>
-	<div class="modal">
+	<div class='modal-cover'></div>
+	<div id='modal-add' class="modal">
 		<div class="modal-top_bar">
 			<span class="modal-top_bar-title">Add a new shortcut</span>
 			<span class="modal-top_bar-close">&times;</span>
@@ -33,6 +34,31 @@
 		</div>
 	</div>
 
+	<div id='modal-installed' class="modal">
+		<div class="modal-top_bar">
+			<span class="modal-top_bar-title">Hi!</span>
+			<span class="modal-top_bar-close">&times;</span>
+		</div>
+		<div class="modal-content" style='padding: 1rem;'>
+			<h2>Thanks for trying out !ShortcutSearch</h2>
+			To add !ShortcutSearch:
+			<ol>
+				<li>
+					Go to the Chrome settings page (chrome://settings)
+				</li>
+				<li>
+					Scroll down to the header 'Search' and click 'Manage search engines...'
+				</li>
+				<li>
+					Find '!ShortcutSearch' and click 'Make default' (should appear upon hovering)
+				</li>
+				<li>
+					That's it! Try it out by searching <span class='pre'>Google Chrome !w</span> to search Wikipedia
+				</li>
+			</ol>
+		</div>
+	</div>
+
 	<header>
 		<div class='noselect' id='shortcuts-holder'>
 			<div title='Add new shortcut' class='shortcut-holder' id='add_shortcut-holder'>
@@ -47,10 +73,10 @@
 		</div>
 		<div class='noselect' title="Return to homepage" onclick="location.hash=''">
 			<img src='/public/img/logo.png' />
-			<span>!Shortcut search</span>
+			<span>!ShortcutSearch</span>
 		</div>
 		<div id="search_box">
-			<span>&#x1f50d;</span>
+			<span class='noselect'>&#x1f50d;</span>
 			<input type="text" placeholder="Search for your shortcuts" />
 		</div>
 	</header>
@@ -64,8 +90,7 @@
 		<h1>Faq</h1>
 		<h3>Is this secure, and can you see what I'm searching?</h3>
 		<p style='padding-left: 1rem;'>
-			Your searches are never sent to the server - all the redirection is done on the client side (your computer).
-			In addition, the search query is taken from the hash of a URL - a part of the URL which the browser never sends to the server. The connection is also encrypted so should be safe from prying eyes.
+			Your searches are never sent to the !Shortcut Search server. However, search suggestions are provided by google (in exactly the same way as the default Chrome search suggestions) and so are sent to their servers. Both redirection and search suggestions use https and so are encrypted.
 		</p>
 		<h3>How do I update the default shortcut list?</h3>
 		<p style='padding-left: 1rem;'>
@@ -74,10 +99,6 @@
 		<h3>How do I add my own shortcuts?</h3>
 		<p style='padding-left: 1rem;'>
 			Simply click the '+' icon at the top and follow the instructions (click on each text box to show instructions).
-		</p>
-		<h3>Can I get auto-suggestions for what I search?</h3>
-		<p style='padding-left: 1rem;'>
-			Not at the moment, but this feature is being worked on and will be added in the future.
 		</p>
 	</script>
 

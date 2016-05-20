@@ -50,6 +50,7 @@
 	var Request = __webpack_require__(3);
 	var Store = __webpack_require__(4);
 	var AddShortcutModal = __webpack_require__(5);
+	var Modal = __webpack_require__(12);
 	var Tooltip = __webpack_require__(6);
 
 	__webpack_require__(7)();
@@ -73,6 +74,17 @@
 		'<li>Look at the address and where you see the search term you entered</li>' +
 		'<li>Replace that text with <b>__QUERY__</b></li></ol>'
 	);
+
+	var platform = location.search.split('?installed=')[1];
+	var installedModal = new Modal(
+		document.querySelector('#modal-installed')
+	);
+
+	if(platform) {
+		if(platform !== 'win') {
+			installedModal.open();
+		}
+	}
 
 /***/ },
 /* 1 */
@@ -5055,16 +5067,17 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(4);
-	var AddShortcutModal = {};
+	var Modal = __webpack_require__(12);
+	var AddShortcutModal = new Modal(
+		document.querySelector('#modal-add'),
+		document.querySelector('#add_shortcut-holder')
+	);
 
-	AddShortcutModal.el = {};
+
 	AddShortcutModal.el.shortcut = document.querySelector('#shortcut_form-shortcut');
 	AddShortcutModal.el.expansion = document.querySelector('#shortcut_form-expansion');
 	AddShortcutModal.el.site = document.querySelector('#shortcut_form-site');
 	AddShortcutModal.el.submit = document.querySelector('#shortcut_form_submit');
-	AddShortcutModal.el.modal = document.querySelector('.modal');
-	AddShortcutModal.el.close = document.querySelector('.modal-top_bar-close');
-	AddShortcutModal.el.icon = document.querySelector('#add_shortcut-holder');
 
 
 	Object.defineProperties(AddShortcutModal, {
@@ -5086,15 +5099,6 @@
 		this.shortcut = '';
 		this.expansion = '';
 		this.site = '';
-	};
-
-	AddShortcutModal.open = function() {
-		this.clear();
-		this.el.modal.classList.add('modal-show');
-	};
-	AddShortcutModal.close = function() {
-		this.clear();
-		this.el.modal.classList.remove('modal-show');
 	};
 
 	AddShortcutModal.validateUrl = function(value){
@@ -5134,14 +5138,9 @@
 
 		AddShortcutModal.clear()
 
-		AddShortcutModal.el.modal.classList.remove('modal-show');
-	});
-	AddShortcutModal.el.close.addEventListener('click', function() {
 		AddShortcutModal.close();
 	});
-	AddShortcutModal.el.icon.addEventListener('click', function() {
-		AddShortcutModal.open();
-	});
+
 
 	module.exports = AddShortcutModal;
 
@@ -5534,6 +5533,50 @@
 			App.refreshUi();
 		}
 	});
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	var Modal = function(root, icon) {
+		var self = this;
+
+		this.root = root;
+
+		this.el = {};
+		this.el.modal = this.root;
+		this.el.icon = icon;
+		this.el.close = this.root.querySelector('.modal-top_bar-close');
+
+		this.open = function() {
+			if(this.clear) {
+				this.clear();
+			}
+			this.el.modal.classList.add('modal-show');
+			document.querySelector('.modal-cover').classList.add('modal-cover-show');
+		};
+
+		this.close = function() {
+			if(this.clear) {
+				this.clear();
+			}
+			this.el.modal.classList.remove('modal-show');
+			document.querySelector('.modal-cover').classList.remove('modal-cover-show');
+		};
+
+		this.el.close.addEventListener('click', function() {
+			self.close();
+		});
+
+		if(this.el.icon) {
+			this.el.icon.addEventListener('click', function() {
+				self.open();
+			});
+		}
+
+	};
+
+	module.exports = Modal;
 
 /***/ }
 /******/ ]);

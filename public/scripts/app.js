@@ -4,6 +4,7 @@ var Router = require('./src/router.js');
 var Request = require('./src/request.js');
 var Store = require('./src/store.js');
 var AddShortcutModal = require('./src/add_shortcut_modal.js');
+var Modal = require('./src/modal.js');
 var Tooltip = require('./src/tooltip.js');
 
 require('./src/download_defaults.js')();
@@ -27,3 +28,14 @@ Tooltip.onClick(
 	'<li>Look at the address and where you see the search term you entered</li>' +
 	'<li>Replace that text with <b>__QUERY__</b></li></ol>'
 );
+
+var platform = location.search.split('?installed=')[1];
+var installedModal = new Modal(
+	document.querySelector('#modal-installed')
+);
+
+if(platform) {
+	if(platform !== 'win') {
+		installedModal.open();
+	}
+}

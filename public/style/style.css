@@ -111,6 +111,20 @@ header {
 			font-size: 2.125rem;
 		}
 			
+.modal-cover {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	z-index: 3;
+	opacity: 0;
+	background-color: rgb(100,100,100);
+	transition: all 0.3s;
+	pointer-events: none;
+}
+	.modal-cover-show {
+		opacity: 0.2;
+		pointer-events: all;
+	}
 
 .modal {
 	width: 37rem;
@@ -216,6 +230,7 @@ header {
 		font-size: 1.25rem;
 		position: absolute;
 		height: 100%;
+		cursor: default;
 		display: flex;
 		align-items: center;
 		left: 0.75rem;

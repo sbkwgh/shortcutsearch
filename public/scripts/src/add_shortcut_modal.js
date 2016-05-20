@@ -1,14 +1,15 @@
 var Store = require('./store.js');
-var AddShortcutModal = {};
+var Modal = require('./modal.js');
+var AddShortcutModal = new Modal(
+	document.querySelector('#modal-add'),
+	document.querySelector('#add_shortcut-holder')
+);
 
-AddShortcutModal.el = {};
+
 AddShortcutModal.el.shortcut = document.querySelector('#shortcut_form-shortcut');
 AddShortcutModal.el.expansion = document.querySelector('#shortcut_form-expansion');
 AddShortcutModal.el.site = document.querySelector('#shortcut_form-site');
 AddShortcutModal.el.submit = document.querySelector('#shortcut_form_submit');
-AddShortcutModal.el.modal = document.querySelector('.modal');
-AddShortcutModal.el.close = document.querySelector('.modal-top_bar-close');
-AddShortcutModal.el.icon = document.querySelector('#add_shortcut-holder');
 
 
 Object.defineProperties(AddShortcutModal, {
@@ -30,15 +31,6 @@ AddShortcutModal.clear = function() {
 	this.shortcut = '';
 	this.expansion = '';
 	this.site = '';
-};
-
-AddShortcutModal.open = function() {
-	this.clear();
-	this.el.modal.classList.add('modal-show');
-};
-AddShortcutModal.close = function() {
-	this.clear();
-	this.el.modal.classList.remove('modal-show');
 };
 
 AddShortcutModal.validateUrl = function(value){
@@ -78,13 +70,8 @@ AddShortcutModal.el.submit.addEventListener('click', function(ev) {
 
 	AddShortcutModal.clear()
 
-	AddShortcutModal.el.modal.classList.remove('modal-show');
-});
-AddShortcutModal.el.close.addEventListener('click', function() {
 	AddShortcutModal.close();
 });
-AddShortcutModal.el.icon.addEventListener('click', function() {
-	AddShortcutModal.open();
-});
+
 
 module.exports = AddShortcutModal;
