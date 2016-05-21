@@ -11,6 +11,23 @@ AddShortcutModal.el.expansion = document.querySelector('#shortcut_form-expansion
 AddShortcutModal.el.site = document.querySelector('#shortcut_form-site');
 AddShortcutModal.el.submit = document.querySelector('#shortcut_form_submit');
 
+AddShortcutModal.el.expansionError = document.querySelector('#shortcut_form-expansion_error');
+AddShortcutModal.el.shortcutError = document.querySelector('#shortcut_form-shortcut_error');
+
+AddShortcutModal.errors = {};
+Object.defineProperties(AddShortcutModal.errors, {
+	shortcut: {
+		set: function(err) {
+			console.log(err)
+			AddShortcutModal.el.shortcutError.innerHTML = err;
+		}
+	},
+	expansion: {
+		set: function(err) {
+			AddShortcutModal.el.expansionError.innerHTML = err;
+		}
+	}
+});
 
 Object.defineProperties(AddShortcutModal, {
 	shortcut: {
@@ -31,6 +48,8 @@ AddShortcutModal.clear = function() {
 	this.shortcut = '';
 	this.expansion = '';
 	this.site = '';
+	this.errors.shortcut = '';
+	this.errors.expansion = '';
 };
 
 AddShortcutModal.validateUrl = function(value){
@@ -50,6 +69,23 @@ AddShortcutModal.el.expansion.addEventListener('keyup', function() {
 	AddShortcutModal.site = AddShortcutModal.getDomainFromURL(AddShortcutModal.expansion);
 });
 AddShortcutModal.el.submit.addEventListener('click', function(ev) {
+	AddShortcutModal.errors.shortcut = '';
+	AddShortcutModal.errors.expansion = '';
+
+	if(!AddShortcutModal.shortcut.length) {
+		AddShortcutModal.errors.shortcut = 'Shortcut must not be empty'
+	}
+	if(!AddShortcutModal.expansion.length) {
+		AddShortcutModal.errors.expansion = 'Expansion URL must not be empty'
+	}
+	if(!AddShortcutModal.expansion.match("__QUERY__")) {
+		AddShortcutModal.errors.expansion = 'Expansion URL must contain __QUERY__'
+	}
+	if(!AddShortcutModal.validateUrl(AddShortcutModal.expansion)) {
+		AddShortcutModal.errors.expansion = 'Expansion URL is not valid';
+	}
+
+
 	if(
 		!AddShortcutModal.shortcut.length ||
 		!AddShortcutModal.expansion.length ||
@@ -63,7 +99,7 @@ AddShortcutModal.el.submit.addEventListener('click', function(ev) {
 
 	Store.add('shortcuts', AddShortcutModal.shortcut.toLowerCase(), {
 		expansion: AddShortcutModal.expansion,
-		site: AddShortcutModal.getDomainFromURL(AddShortcutModal.site)
+		site: AddShortcutModal.site
 	});
 
 	App.refreshUi();

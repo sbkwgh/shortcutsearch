@@ -50,17 +50,17 @@
 	var Request = __webpack_require__(3);
 	var Store = __webpack_require__(4);
 	var AddShortcutModal = __webpack_require__(5);
-	var Modal = __webpack_require__(12);
-	var Tooltip = __webpack_require__(6);
+	var Modal = __webpack_require__(6);
+	var Tooltip = __webpack_require__(7);
 
-	__webpack_require__(7)();
+	__webpack_require__(8)();
 
 	App = new Router(document.querySelector('#app'));
 
-	App.addRoute('index', __webpack_require__(8));
-	App.addRoute('/faq', __webpack_require__(9));
-	App.addRoute('/search/:query', __webpack_require__(10));
-	App.addRoute('/settings', __webpack_require__(11));
+	App.addRoute('index', __webpack_require__(9));
+	App.addRoute('/faq', __webpack_require__(10));
+	App.addRoute('/search/:query', __webpack_require__(11));
+	App.addRoute('/settings', __webpack_require__(12));
 
 	Tooltip.onClick(
 		'#shortcut_form-shortcut',
@@ -5067,7 +5067,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(4);
-	var Modal = __webpack_require__(12);
+	var Modal = __webpack_require__(6);
 	var AddShortcutModal = new Modal(
 		document.querySelector('#modal-add'),
 		document.querySelector('#add_shortcut-holder')
@@ -5079,6 +5079,23 @@
 	AddShortcutModal.el.site = document.querySelector('#shortcut_form-site');
 	AddShortcutModal.el.submit = document.querySelector('#shortcut_form_submit');
 
+	AddShortcutModal.el.expansionError = document.querySelector('#shortcut_form-expansion_error');
+	AddShortcutModal.el.shortcutError = document.querySelector('#shortcut_form-shortcut_error');
+
+	AddShortcutModal.errors = {};
+	Object.defineProperties(AddShortcutModal.errors, {
+		shortcut: {
+			set: function(err) {
+				console.log(err)
+				AddShortcutModal.el.shortcutError.innerHTML = err;
+			}
+		},
+		expansion: {
+			set: function(err) {
+				AddShortcutModal.el.expansionError.innerHTML = err;
+			}
+		}
+	});
 
 	Object.defineProperties(AddShortcutModal, {
 		shortcut: {
@@ -5099,6 +5116,8 @@
 		this.shortcut = '';
 		this.expansion = '';
 		this.site = '';
+		this.errors.shortcut = '';
+		this.errors.expansion = '';
 	};
 
 	AddShortcutModal.validateUrl = function(value){
@@ -5118,6 +5137,23 @@
 		AddShortcutModal.site = AddShortcutModal.getDomainFromURL(AddShortcutModal.expansion);
 	});
 	AddShortcutModal.el.submit.addEventListener('click', function(ev) {
+		AddShortcutModal.errors.shortcut = '';
+		AddShortcutModal.errors.expansion = '';
+
+		if(!AddShortcutModal.shortcut.length) {
+			AddShortcutModal.errors.shortcut = 'Shortcut must not be empty'
+		}
+		if(!AddShortcutModal.expansion.length) {
+			AddShortcutModal.errors.expansion = 'Expansion URL must not be empty'
+		}
+		if(!AddShortcutModal.expansion.match("__QUERY__")) {
+			AddShortcutModal.errors.expansion = 'Expansion URL must contain __QUERY__'
+		}
+		if(!AddShortcutModal.validateUrl(AddShortcutModal.expansion)) {
+			AddShortcutModal.errors.expansion = 'Expansion URL is not valid';
+		}
+
+
 		if(
 			!AddShortcutModal.shortcut.length ||
 			!AddShortcutModal.expansion.length ||
@@ -5131,7 +5167,7 @@
 
 		Store.add('shortcuts', AddShortcutModal.shortcut.toLowerCase(), {
 			expansion: AddShortcutModal.expansion,
-			site: AddShortcutModal.getDomainFromURL(AddShortcutModal.site)
+			site: AddShortcutModal.site
 		});
 
 		App.refreshUi();
@@ -5146,6 +5182,50 @@
 
 /***/ },
 /* 6 */
+/***/ function(module, exports) {
+
+	var Modal = function(root, icon) {
+		var self = this;
+
+		this.root = root;
+
+		this.el = {};
+		this.el.modal = this.root;
+		this.el.icon = icon;
+		this.el.close = this.root.querySelector('.modal-top_bar-close');
+
+		this.open = function() {
+			if(this.clear) {
+				this.clear();
+			}
+			this.el.modal.classList.add('modal-show');
+			document.querySelector('.modal-cover').classList.add('modal-cover-show');
+		};
+
+		this.close = function() {
+			if(this.clear) {
+				this.clear();
+			}
+			this.el.modal.classList.remove('modal-show');
+			document.querySelector('.modal-cover').classList.remove('modal-cover-show');
+		};
+
+		this.el.close.addEventListener('click', function() {
+			self.close();
+		});
+
+		if(this.el.icon) {
+			this.el.icon.addEventListener('click', function() {
+				self.open();
+			});
+		}
+
+	};
+
+	module.exports = Modal;
+
+/***/ },
+/* 7 */
 /***/ function(module, exports) {
 
 	var Tooltip = {};
@@ -5294,7 +5374,7 @@
 	module.exports = Tooltip;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Request = __webpack_require__(3);
@@ -5317,11 +5397,11 @@
 	}
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(4);
-	var downloadDefaults = __webpack_require__(7);
+	var downloadDefaults = __webpack_require__(8);
 
 	module.exports = function(templateContainer, templateHTML, data) {
 		var template = Handlebars.compile(templateHTML);
@@ -5406,7 +5486,7 @@
 	});
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = function(templateContainer, templateHTML, data) {
@@ -5414,7 +5494,7 @@
 	};
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(4);
@@ -5492,10 +5572,10 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var downloadDefaults = __webpack_require__(7);
+	var downloadDefaults = __webpack_require__(8);
 
 	module.exports = function(templateContainer, templateHTML, data) {
 		var template = Handlebars.compile(templateHTML);
@@ -5533,50 +5613,6 @@
 			App.refreshUi();
 		}
 	});
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-	var Modal = function(root, icon) {
-		var self = this;
-
-		this.root = root;
-
-		this.el = {};
-		this.el.modal = this.root;
-		this.el.icon = icon;
-		this.el.close = this.root.querySelector('.modal-top_bar-close');
-
-		this.open = function() {
-			if(this.clear) {
-				this.clear();
-			}
-			this.el.modal.classList.add('modal-show');
-			document.querySelector('.modal-cover').classList.add('modal-cover-show');
-		};
-
-		this.close = function() {
-			if(this.clear) {
-				this.clear();
-			}
-			this.el.modal.classList.remove('modal-show');
-			document.querySelector('.modal-cover').classList.remove('modal-cover-show');
-		};
-
-		this.el.close.addEventListener('click', function() {
-			self.close();
-		});
-
-		if(this.el.icon) {
-			this.el.icon.addEventListener('click', function() {
-				self.open();
-			});
-		}
-
-	};
-
-	module.exports = Modal;
 
 /***/ }
 /******/ ]);

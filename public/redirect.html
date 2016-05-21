@@ -1,12 +1,12 @@
 <script type="text/javascript">
 	function getExpansion(shortcutName) {
 		var shortcut = JSON.parse(localStorage.getItem('shortcuts') || '{}')[shortcutName];
-		var defaults = JSON.parse(localStorage.getItem('defaults') || '{}')[shortcutName];
+		var defaultShortcut = JSON.parse(localStorage.getItem('defaults') || '{}')[shortcutName];
 
 		if(shortcut) {
 			return shortcut;
 		} else {
-			return defaults;
+			return defaultShortcut;
 		}
 	}
 
@@ -17,6 +17,9 @@
 		shortcut = URL.match(/(?:^|\s)(\![a-z]+)(?=\s|$)/i)[1];
 		search = URL.replace(new RegExp('(?:^|\\s)' + shortcut + '(?=\\s|$)', 'i'), '');
 		search = search.trimLeft();
+	} else if(URL.match(/\![a-z]+$/)) {
+		shortcut = URL.match(/\![a-z]+$/i)[0];
+		search = URL.replace(shortcut, '');
 	}
 
 	expansion = getExpansion(shortcut);
