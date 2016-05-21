@@ -24,7 +24,7 @@
 
 	expansion = getExpansion(shortcut);
 
-	if(!shortcut) {
+	if(!shortcut || !expansion) {
 		location.href = 'https://encrypted.google.com/search?hl=en&q=' + URL;
 	} else if(expansion) {
 		location.href = expansion.expansion.replace('__QUERY__', search);
