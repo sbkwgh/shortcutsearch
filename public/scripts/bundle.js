@@ -79,7 +79,7 @@
 		document.querySelector('#modal-installed')
 	);
 
-	if(location.search.match('win')) {
+	if(!location.search.match('win')) {
 		installedModal.open();
 	}
 
