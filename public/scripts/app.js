@@ -33,6 +33,6 @@ var installedModal = new Modal(
 	document.querySelector('#modal-installed')
 );
 
-if(!location.search.match('win')) {
+if(location.search.length && !location.search.match('win')) {
 	installedModal.open();
 }
