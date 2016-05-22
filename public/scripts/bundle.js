@@ -5211,7 +5211,7 @@
 		this.el.close.addEventListener('click', function() {
 			self.close();
 
-			if(location.search.match('installed')) {
+			if(location.search.length) {
 				location.search = '';
 			}
 		});
