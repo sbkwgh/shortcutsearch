@@ -34,8 +34,8 @@ var installedModal = new Modal(
 	document.querySelector('#modal-installed')
 );
 
-if(platform) {
-	if(platform !== 'win') {
+if(platform || location.search.length) {
+	if(platform !== 'win' || location.search.slice(1) !== 'win') {
 		installedModal.open();
 	}
 }
