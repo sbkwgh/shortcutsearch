@@ -29,13 +29,10 @@ Tooltip.onClick(
 	'<li>Replace that text with <b>__QUERY__</b></li></ol>'
 );
 
-var platform = location.search.split('?installed=')[1];
 var installedModal = new Modal(
 	document.querySelector('#modal-installed')
 );
 
-if(platform || location.search.length) {
-	if(platform !== 'win' || location.search.slice(1) !== 'win') {
-		installedModal.open();
-	}
+if(location.search.match('win')) {
+	installedModal.open();
 }
