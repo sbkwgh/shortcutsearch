@@ -52,9 +52,18 @@ module.exports = function(templateContainer, templateHTML, data) {
 
 ['mouseover', 'mouseout'].forEach(function(event) {
 	document.body.addEventListener(event, function(ev) {
-		if(!ev.target.parentElement.matches('tbody tr')) return;
+		if(
+			!ev.target.parentElement.matches('tbody tr') &&
+			(ev.target.parentElement.parentElement &&
+			!ev.target.parentElement.parentElement.matches('tbody tr'))
+		) return;
 		
 		var tr = ev.target.parentElement;
+
+		if(tr.nodeName === 'TD') {
+			tr = ev.target.parentElement.parentElement;
+		}
+
 		tr.classList.toggle('table-show_delete')
 	});
 });

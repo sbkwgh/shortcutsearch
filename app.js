@@ -15,6 +15,9 @@ app.get('/', function(req, res) {
 app.get('/googleac10c630c73587c2.html', function(req, res) {
 	res.sendFile(path.join(__dirname, './public', 'googleac10c630c73587c2.html'));
 });
+app.get('/opensearch.xml', function(req, res) {
+	res.sendFile(path.join(__dirname, './public', 'opensearch.xml'));
+});
 app.get('/redirect', function(req, res) {
 	res.sendFile(path.join(__dirname, './public', 'redirect.html'));
 });

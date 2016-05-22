@@ -3,6 +3,6 @@
 	<ShortName>!ShortcutSearch</ShortName>
 	<Description>!ShortcutSearch provider</Description>
 	<Image width="32" height="32">https://shortcutsearch.herokuapp.com/public/img/icon32.png</Image>
-	<Url type="application/x-suggestions+json" template="https://clients1.google.co.uk/complete/search?client=chrome&output=chrome&hl=en-US&q={searchTerms}"/>
+	<Url type="application/x-suggestions+json" template="https://clients1.google.co.uk/complete/search?client=chrome&amp;output=chrome&amp;hl=en-US&amp;q={searchTerms}"/>
 	<InputEncoding>UTF-8</InputEncoding><Url type="text/html" template="https://shortcutsearch.herokuapp.com/redirect#{searchTerms}"/>
 </OpenSearchDescription>

@@ -20,12 +20,17 @@ var Modal = function(root, icon) {
 		if(this.clear) {
 			this.clear();
 		}
+
 		this.el.modal.classList.remove('modal-show');
 		document.querySelector('.modal-cover').classList.remove('modal-cover-show');
 	};
 
 	this.el.close.addEventListener('click', function() {
 		self.close();
+
+		if(location.search.match('installed')) {
+			location.search = '';
+		}
 	});
 
 	if(this.el.icon) {

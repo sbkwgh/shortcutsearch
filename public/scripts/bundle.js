@@ -5206,12 +5206,17 @@
 			if(this.clear) {
 				this.clear();
 			}
+
 			this.el.modal.classList.remove('modal-show');
 			document.querySelector('.modal-cover').classList.remove('modal-cover-show');
 		};
 
 		this.el.close.addEventListener('click', function() {
 			self.close();
+
+			if(location.search.match('installed')) {
+				location.search = '';
+			}
 		});
 
 		if(this.el.icon) {
@@ -5454,9 +5459,18 @@
 
 	['mouseover', 'mouseout'].forEach(function(event) {
 		document.body.addEventListener(event, function(ev) {
-			if(!ev.target.parentElement.matches('tbody tr')) return;
+			if(
+				!ev.target.parentElement.matches('tbody tr') &&
+				(ev.target.parentElement.parentElement &&
+				!ev.target.parentElement.parentElement.matches('tbody tr'))
+			) return;
 			
 			var tr = ev.target.parentElement;
+
+			if(tr.nodeName === 'TD') {
+				tr = ev.target.parentElement.parentElement;
+			}
+
 			tr.classList.toggle('table-show_delete')
 		});
 	});
