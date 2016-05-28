@@ -4,6 +4,11 @@ var Store = {
 		return items || {};
 
 	},
+	set: function(name, value) {
+		var item = JSON.stringify(value);
+
+		localStorage.setItem(name, item);
+	},
 	add: function(name, item, value) {
 		var items = this.get(name);
 		items[item] = value;

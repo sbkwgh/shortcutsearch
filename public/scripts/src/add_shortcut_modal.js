@@ -1,5 +1,7 @@
 var Store = require('./store.js');
 var Modal = require('./modal.js');
+var Tooltip = require('./tooltip.js');
+
 var AddShortcutModal = new Modal(
 	document.querySelector('#modal-add'),
 	document.querySelector('#add_shortcut-holder')
@@ -109,5 +111,18 @@ AddShortcutModal.el.submit.addEventListener('click', function(ev) {
 	AddShortcutModal.close();
 });
 
+
+Tooltip.onClick(
+	'#shortcut_form-shortcut',
+	'<img height="20em" src="/public/img/chrome-crop.gif" />' +
+	'This is what you\'ll enter after your search term to launch the shortcut <br/>	(e.g. to search wikipedia)'
+);
+Tooltip.onClick(
+	'#shortcut_form-expansion',
+	'To find the expansion url:' +
+	'<ol><li>Enter a search term on the website you want to add.</li>' +
+	'<li>Look at the address and where you see the search term you entered</li>' +
+	'<li>Replace that text with <b>__QUERY__</b></li></ol>'
+);
 
 module.exports = AddShortcutModal;

@@ -349,7 +349,7 @@ table {
 
 .button {
 	font-family: 'Roboto', sans-serif;
-	border: 0.25rem solid #808080;
+	border: thin solid #808080;
 	font-weight: 300;
 	display: inline-block;
 	border-radius: 0.25rem;

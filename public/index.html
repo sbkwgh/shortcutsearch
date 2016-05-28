@@ -4,6 +4,7 @@
 	<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 	<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="!ShortcutSearch" />
 	<link rel="stylesheet" type="text/css" href="/public/style/style.css">
+	<link rel="stylesheet" type="text/css" href="/public/style/confirm-box.css">
 	<link rel="stylesheet" type="text/css" href="/public/style/tooltip.css">
 	<link rel="shortcut icon" href="/public/img/icon32.png">
 	<title>!ShortcutSearch</title>
@@ -87,6 +88,17 @@
 		<div id='app'></div>
 	</div>
 
+	<script type="text/template" data-template='confirm-box'>
+		<div class='confirm-box'>
+			<div class='confirm-box-content'>
+				{{message}}
+			</div>
+			<div class='confirm-box-buttons'>
+				<button id='confirm-button-ok' class='button {{#if okColour}}btn-{{okColour}}{{/if}}'>OK</button>
+				<button id='confirm-button-cancel' class='button'>Cancel</button>
+			</div>
+		</div>
+	</script>
 	<script type="text/template" data-template='search/:query'>
 	</script>
 	<script type="text/template" data-template='faq'>
@@ -163,6 +175,15 @@
 	<script type="text/template" data-template="settings">
 		<h1 class="title">Settings</h1>
 		<p>
+			<select id='settings-default_search'>
+				<option value='Google'>Google (default)</option>
+				<option value='Bing'>Bing</option>
+				<option value='Yahoo!'>Yahoo!</option>
+				<option value='DuckDuckGo'>DuckDuckGo</option>
+			</select><br/>
+			Change the default search engine (currently <span id='settings-default_search-current'>{{defaultSearch}}</span>)
+		</p>
+		<p>
 			<div class='button btn-normal' id='settings-restore_defaults'>Restore default shortcuts</div><br/>
 			This restores all default shortcuts which you have removed
 		</p>
@@ -174,7 +195,6 @@
 			<div class='button btn-red btn-normal' id='settings-reset'>Reset all shortcuts</div><br/>
 			This deletes all custom shortcuts, and restores all default shortcuts
 		</p>
-		
 	</script>
 
 	<script type="text/javascript" src="/public/scripts/bundle.js"></script>

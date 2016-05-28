@@ -1,5 +1,6 @@
 var Store = require('../store.js');
 var downloadDefaults = require('../download_defaults.js');
+var confirmBox = require('../confirmBox.js');
 
 module.exports = function(templateContainer, templateHTML, data) {
 	var template = Handlebars.compile(templateHTML);
@@ -76,18 +77,21 @@ document.body.addEventListener('click', function(ev) {
 	if(tr.classList.contains('table-sub_header')) return;
 
 	if(ev.target.matches('tbody tr td:last-child')) {
-		var really = confirm('Are you sure you want to delete the shortcut "' + shortcut + '"? You can\'t undo this action.');
-
-		if(!really) return;
-
-		if(tr.getAttribute('data-default')) {
-			Store.add('deleted', shortcut, Store.get('defaults')[shortcut]);
-			tr.parentElement.removeChild(tr);
-			downloadDefaults();
-		} else {
-			Store.remove('shortcuts', shortcut);
-			App.refreshUi();
-		}
-
+		confirmBox(
+			'Are you sure you want to delete the shortcut "' + shortcut + '"? You can\'t undo this action.',
+			function(res) {
+				if(res) {
+					if(tr.getAttribute('data-default')) {
+						Store.add('deleted', shortcut, Store.get('defaults')[shortcut]);
+						tr.parentElement.removeChild(tr);
+						downloadDefaults();
+					} else {
+						Store.remove('shortcuts', shortcut);
+						App.refreshUi();
+					}
+				}
+			},
+			'red'
+		);
 	}
 });

@@ -51,7 +51,6 @@
 	var Store = __webpack_require__(4);
 	var AddShortcutModal = __webpack_require__(5);
 	var Modal = __webpack_require__(6);
-	var Tooltip = __webpack_require__(7);
 
 	__webpack_require__(8)();
 
@@ -62,23 +61,16 @@
 	App.addRoute('/search/:query', __webpack_require__(11));
 	App.addRoute('/settings', __webpack_require__(12));
 
-	Tooltip.onClick(
-		'#shortcut_form-shortcut',
-		'<img height="20em" src="/public/img/chrome-crop.gif" />' +
-		'This is what you\'ll enter after your search term to launch the shortcut <br/>	(e.g. to search wikipedia)'
-	);
-	Tooltip.onClick(
-		'#shortcut_form-expansion',
-		'To find the expansion url:' +
-		'<ol><li>Enter a search term on the website you want to add.</li>' +
-		'<li>Look at the address and where you see the search term you entered</li>' +
-		'<li>Replace that text with <b>__QUERY__</b></li></ol>'
-	);
+	if(!Store.get('defaultSearch').name) {
+		Store.set('defaultSearch', {
+			name: 'Google',
+			URL: 'https://encrypted.google.com/search?hl=en&q='
+		});
+	}
 
 	var installedModal = new Modal(
 		document.querySelector('#modal-installed')
 	);
-
 	if(location.search.length && !location.search.match('win')) {
 		installedModal.open();
 	}
@@ -5037,6 +5029,11 @@
 			return items || {};
 
 		},
+		set: function(name, value) {
+			var item = JSON.stringify(value);
+
+			localStorage.setItem(name, item);
+		},
 		add: function(name, item, value) {
 			var items = this.get(name);
 			items[item] = value;
@@ -5065,6 +5062,8 @@
 
 	var Store = __webpack_require__(4);
 	var Modal = __webpack_require__(6);
+	var Tooltip = __webpack_require__(7);
+
 	var AddShortcutModal = new Modal(
 		document.querySelector('#modal-add'),
 		document.querySelector('#add_shortcut-holder')
@@ -5174,6 +5173,19 @@
 		AddShortcutModal.close();
 	});
 
+
+	Tooltip.onClick(
+		'#shortcut_form-shortcut',
+		'<img height="20em" src="/public/img/chrome-crop.gif" />' +
+		'This is what you\'ll enter after your search term to launch the shortcut <br/>	(e.g. to search wikipedia)'
+	);
+	Tooltip.onClick(
+		'#shortcut_form-expansion',
+		'To find the expansion url:' +
+		'<ol><li>Enter a search term on the website you want to add.</li>' +
+		'<li>Look at the address and where you see the search term you entered</li>' +
+		'<li>Replace that text with <b>__QUERY__</b></li></ol>'
+	);
 
 	module.exports = AddShortcutModal;
 
@@ -5404,6 +5416,7 @@
 
 	var Store = __webpack_require__(4);
 	var downloadDefaults = __webpack_require__(8);
+	var confirmBox = __webpack_require__(14);
 
 	module.exports = function(templateContainer, templateHTML, data) {
 		var template = Handlebars.compile(templateHTML);
@@ -5480,19 +5493,22 @@
 		if(tr.classList.contains('table-sub_header')) return;
 
 		if(ev.target.matches('tbody tr td:last-child')) {
-			var really = confirm('Are you sure you want to delete the shortcut "' + shortcut + '"? You can\'t undo this action.');
-
-			if(!really) return;
-
-			if(tr.getAttribute('data-default')) {
-				Store.add('deleted', shortcut, Store.get('defaults')[shortcut]);
-				tr.parentElement.removeChild(tr);
-				downloadDefaults();
-			} else {
-				Store.remove('shortcuts', shortcut);
-				App.refreshUi();
-			}
-
+			confirmBox(
+				'Are you sure you want to delete the shortcut "' + shortcut + '"? You can\'t undo this action.',
+				function(res) {
+					if(res) {
+						if(tr.getAttribute('data-default')) {
+							Store.add('deleted', shortcut, Store.get('defaults')[shortcut]);
+							tr.parentElement.removeChild(tr);
+							downloadDefaults();
+						} else {
+							Store.remove('shortcuts', shortcut);
+							App.refreshUi();
+						}
+					}
+				},
+				'red'
+			);
 		}
 	});
 
@@ -5587,43 +5603,133 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var downloadDefaults = __webpack_require__(8);
+	var confirmBox = __webpack_require__(14);
+	var Store = __webpack_require__(4);
 
 	module.exports = function(templateContainer, templateHTML, data) {
 		var template = Handlebars.compile(templateHTML);
+		var defaultSearch = Store.get('defaultSearch');
 
-		templateContainer.innerHTML = template(data);
+		templateContainer.innerHTML = template({defaultSearch: defaultSearch.name});
+
+		[].forEach.call(document.querySelectorAll('#settings-default_search option'), function(option) {
+			if(option.value === defaultSearch.name) {
+				option.setAttribute('selected', 'true');
+			}
+		});
 	};
 
 	document.body.addEventListener('click', function(ev) {
-		if(
-			ev.target.matches('#settings-reset') &&
-			confirm('Are you sure you want to reset everything and delete all custom shortcuts?')
-		) {
-			delete localStorage.shortcuts;
-			delete localStorage.deleted;
+		if(ev.target.matches('#settings-reset')) {
+			confirmBox(
+				'Are you sure you want to reset everything and delete all custom shortcuts?',
+				function(res) {
+					if(res) {
+						delete localStorage.shortcuts;
+						delete localStorage.deleted;
 
-			downloadDefaults();
-			location.hash = '';
-			App.refreshUi();
-		} else if(
-			ev.target.matches('#settings-restore_defaults') &&
-			confirm('Are you sure you want to reset the default shortcuts?')
-		) {
-			delete localStorage.deleted;
+						downloadDefaults();
+						location.hash = '';
+						App.refreshUi();
+					}
+				},
+				'red'
+			);
+		} else if(ev.target.matches('#settings-restore_defaults')) {
+			confirmBox(
+				'Are you sure you want to reset the default shortcuts?',
+				function(res) {
+					if(res) {
+						delete localStorage.deleted;
 
-			downloadDefaults();
-			location.hash = '';
-			App.refreshUi();
-		} else if(
-			ev.target.matches('#settings-delete_shortcuts') &&
-			confirm('Are you sure you want to delete all custom shortcuts?')
-		) {
-			delete localStorage.shortcuts;
+						downloadDefaults();
+						location.hash = '';
+						App.refreshUi();
+					}
+				}
+			);
+		} else if(ev.target.matches('#settings-delete_shortcuts')) {
+			confirmBox(
+				'Are you sure you want to delete all custom shortcuts?',
+				function(res) {
+					if(res) {
+						delete localStorage.shortcuts;
 
-			location.hash = '';
-			App.refreshUi();
+						location.hash = '';
+						App.refreshUi();
+					}
+				},
+				'red'
+			);
 		}
 	});
+
+	document.body.addEventListener('change', function(ev) {
+		if(ev.target.matches('#settings-default_search')) {
+			var selected = ev.target.options[ev.target.selectedIndex].value;
+			var URL;
+
+			switch(selected) {
+				case "Google":
+					URL = 'https://encrypted.google.com/search?hl=en&q=';
+					break;
+				case "DuckDuckGo":
+					URL = 'https://duckduckgo.com/?q=';
+					break;
+				case "Bing":
+					URL = 'http://www.bing.com/search?q=';
+					break;
+				case "Yahoo!":
+					URL = 'https://search.yahoo.com/search?p=';
+					break;
+				default:
+					URL = 'https://encrypted.google.com/search?hl=en&q=';
+			}
+
+			Store.set('defaultSearch', {
+				name: selected,
+				URL: URL
+			});
+			document.querySelector('#settings-default_search-current').innerHTML = selected;
+		}
+	});
+
+/***/ },
+/* 13 */,
+/* 14 */
+/***/ function(module, exports) {
+
+	var confirmBox = function (message, cb, okColour) {
+		var confirmBoxDiv = document.createElement('div');
+		var template = document.querySelector('script[data-template="confirm-box"]').innerHTML;
+
+		confirmBoxDiv.classList.add('confirm');
+		confirmBoxDiv.innerHTML = Handlebars.compile(template)({'message': message, 'okColour': okColour});
+
+		confirmBoxDiv.close = function() {
+			confirmBoxDiv.classList.add('confirm-close');
+
+			setTimeout(function() {
+				document.body.removeChild(confirmBoxDiv);
+			}, 250)
+		}
+
+		confirmBoxDiv.querySelector('#confirm-button-ok').addEventListener('click', function() {
+			cb(true);
+			confirmBoxDiv.close();
+		});
+		confirmBoxDiv.querySelector('#confirm-button-cancel').addEventListener('click', function() {
+			cb(false);
+			confirmBoxDiv.close();
+		});
+
+		if(document.querySelector('.confirm')) {
+			document.body.removeChild(document.querySelector('.confirm'));
+		}
+		document.body.appendChild(confirmBoxDiv);
+	}
+
+	module.exports = confirmBox;
 
 /***/ }
 /******/ ]);
