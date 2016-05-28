@@ -70,7 +70,7 @@ header {
 	}
 	header #shortcuts-holder {
 		position: absolute;
-		left: 1rem;
+		left: 0.5rem;
 		height: 5rem;
 		top: 0px;
 		display: flex;
@@ -241,21 +241,25 @@ header {
 		}
 
 #search_box {
-	width: 18rem;
+	width: 15.25rem;
 	position: fixed;
-	right: 2rem;
+	right: 1.5rem;
 	top: 0;
 }
 	#search_box span {
+		background-image: url('/public/img/search.svg');
 		font-size: 1.25rem;
 		position: absolute;
 		height: 100%;
 		cursor: default;
 		display: flex;
 		align-items: center;
-		left: 0.75rem;
-		top: 0.4rem;
+		left: 0.8rem;
+		top: 2rem;
 		color: gray;
+		width: 1rem;
+		background-repeat: no-repeat;
+		background-size: 1rem;
 	}
 	#search_box input[type="text"] {
 		width: 100%;
