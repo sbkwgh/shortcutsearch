@@ -5610,7 +5610,10 @@
 		var template = Handlebars.compile(templateHTML);
 		var defaultSearch = Store.get('defaultSearch');
 
-		templateContainer.innerHTML = template({defaultSearch: defaultSearch.name});
+		templateContainer.innerHTML = template({
+			defaultSearch: defaultSearch.name,
+			hideSettingsMessage: localStorage.getItem('hideSettingsMessage')
+		});
 
 		[].forEach.call(document.querySelectorAll('#settings-default_search option'), function(option) {
 			if(option.value === defaultSearch.name) {
@@ -5620,6 +5623,13 @@
 	};
 
 	document.body.addEventListener('click', function(ev) {
+		if(ev.target.matches('.message_box-small-close')) {
+			var msg = document.querySelector('.message_box.message_box-small');
+			msg.parentElement.removeChild(msg);
+
+			localStorage.setItem('hideSettingsMessage', true);
+		}
+
 		if(ev.target.matches('#settings-reset')) {
 			confirmBox(
 				'Are you sure you want to reset everything and delete all custom shortcuts?',
@@ -5711,7 +5721,7 @@
 
 			setTimeout(function() {
 				document.body.removeChild(confirmBoxDiv);
-			}, 250)
+			}, 200)
 		}
 
 		confirmBoxDiv.querySelector('#confirm-button-ok').addEventListener('click', function() {

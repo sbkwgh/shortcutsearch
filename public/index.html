@@ -11,55 +11,54 @@
 	<meta charset="UTF-8">
 </head>
 <body>
-	<div class='modal-cover'></div>
-	<div id='modal-add' class="modal">
-		<div class="modal-top_bar">
-			<span class="modal-top_bar-title">Add a new shortcut</span>
-			<span class="modal-top_bar-close">&times;</span>
-		</div>
-		<div class="modal-content">
-			<div id='shortcut_form'>
-					Enter the shorthand for your shortcut:<br/>
-					<span class='shortcut-error' id='shortcut_form-shortcut_error'></span>
-					<input type='text' id="shortcut_form-shortcut" placeholder='e.g. !w for wikipedia' />
-				<p>
-					Enter the address which your shortcut will use to search:<br/>
-					<span class='shortcut-error' id='shortcut_form-expansion_error'></span>
-					<input type="text" id="shortcut_form-expansion" placeholder="e.g. http://en.wikipedia.org/w/index.php?search=__QUERY__" />
-				</p>
-				<p>
-					Enter the site name for your shortcut (optional):<br/>
-					<input type="text" id="shortcut_form-site" placeholder="e.g. Wikipedia" />
-				</p>
-				<p>
-					<input type="button" id="shortcut_form_submit" class="button btn-green" value="Add" />
-				</p>
+	<div class='modal-cover'>
+		<div id='modal-add' class="modal">
+			<div class="modal-top_bar">
+				<span class="modal-top_bar-title">Add a new shortcut</span>
+				<span class="modal-top_bar-close">&times;</span>
+			</div>
+			<div class="modal-content">
+				<div id='shortcut_form'>
+						Enter the shorthand for your shortcut:<br/>
+						<span class='shortcut-error' id='shortcut_form-shortcut_error'></span>
+						<input type='text' id="shortcut_form-shortcut" placeholder='e.g. !w for wikipedia' />
+					<p>
+						Enter the address which your shortcut will use to search:<br/>
+						<span class='shortcut-error' id='shortcut_form-expansion_error'></span>
+						<input type="text" id="shortcut_form-expansion" placeholder="e.g. http://en.wikipedia.org/w/index.php?search=__QUERY__" />
+					</p>
+					<p>
+						Enter the site name for your shortcut (optional):<br/>
+						<input type="text" id="shortcut_form-site" placeholder="e.g. Wikipedia" />
+					</p>
+					<input type="button" id="shortcut_form_submit" class="button btn-green" value="Add shortcut" />
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<div id='modal-installed' class="modal">
-		<div class="modal-top_bar">
-			<span class="modal-top_bar-title">Hi!</span>
-			<span class="modal-top_bar-close">&times;</span>
-		</div>
-		<div class="modal-content" style='padding: 1rem;'>
-			<h2>Thanks for trying out !ShortcutSearch</h2>
-			To add !ShortcutSearch:
-			<ol>
-				<li>
-					Go to the Chrome settings page (chrome://settings)
-				</li>
-				<li>
-					Scroll down to the header 'Search' and click 'Manage search engines...'
-				</li>
-				<li>
-					Find '!ShortcutSearch' and click 'Make default' (should appear upon hovering)
-				</li>
-				<li>
-					That's it! Try it out by searching <span class='pre'>Google Chrome !w</span> to search Wikipedia
-				</li>
-			</ol>
+	<div class='modal-cover'>
+		<div id='modal-installed' class="modal">
+			<div class="modal-top_bar">
+				<span class="modal-top_bar-title">Hi!</span>
+				<span class="modal-top_bar-close">&times;</span>
+			</div>
+			<div class="modal-content" style='padding: 1rem;'>
+				<h2 style="margin: 0px 0px 0.5rem;">Thanks for trying out !ShortcutSearch</h2>
+				To add !ShortcutSearch:
+				<ol>
+					<li>
+						Go to the Chrome settings page (chrome://settings)
+					</li>
+					<li>
+						Scroll down to the header 'Search' and click 'Manage search engines...'
+					</li>
+					<li>
+						Find '!ShortcutSearch' and click 'Make default' (should appear upon hovering)
+					</li>
+				</ol>
+				That's it! Try it out by searching <span class='pre'>Google Chrome !w</span> to search Wikipedia
+			</div>
 		</div>
 	</div>
 
@@ -127,7 +126,7 @@
 			<p class='message_box'>
 				To use a shortcut simply enter a search query in the OmniBox bar, then add the shortcut at the end.
 				e.g. <span class="pre pre-bold">google chrome !w</span> takes you to the Wikipedia entry for Chrome
-				<br/>To add your own shortcut click the <span class="pre pre-bold">+</span> button
+				<br/>To add your own shortcut click the <span title="Close message" class="pre pre-bold">+</span> button
 			</p>
 			<table>
 				<thead>
@@ -174,6 +173,10 @@
 
 	<script type="text/template" data-template="settings">
 		<h1 class="title">Settings</h1>
+		<p class='message_box message_box-small' {{#if hideSettingsMessage}}style="display: none"{{/if}}>
+			<span class='message_box-small-close'>&times;</span>
+			To add your own shortcut click the <span class="pre pre-bold">+</span> button
+		</p>
 		<p>
 			<select id='settings-default_search'>
 				<option value='Google'>Google (default)</option>

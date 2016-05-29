@@ -10,7 +10,7 @@ var confirmBox = function (message, cb, okColour) {
 
 		setTimeout(function() {
 			document.body.removeChild(confirmBoxDiv);
-		}, 250)
+		}, 200)
 	}
 
 	confirmBoxDiv.querySelector('#confirm-button-ok').addEventListener('click', function() {

@@ -1,1 +1,1 @@
-location.href = 'https://shortcutsearch.herokuapp.com/'
+location.href = 'https://shortcutsearch.herokuapp.com/#settings'

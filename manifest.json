@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "name": "!ShortcutSearch",
   "options_page": "/extension/options.html",
   "description": "Search your favorite sites directly from the Chrome search bar",
@@ -10,7 +10,7 @@
         "name": "",
         "search_url": "https://shortcutsearch.herokuapp.com/redirect#{searchTerms}",
         "keyword": "shrtcut",
-        "favicon_url": "https://shortcutsearch.herokuapp.com/public/img/favicon.ico",
+        "favicon_url": "https://shortcutsearch.herokuapp.com/public/img/icon32.png",
         "encoding": "UTF-8",
         "is_default": true
     }
