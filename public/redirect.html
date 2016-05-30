@@ -42,7 +42,7 @@
 		return JSON.parse(localStorage.getItem('defaultSearch')).URL + query;
 	}
 
-	var query = decodeURI(location.hash.slice(1).replace('%20', ' '));
+	var query = decodeURI(location.hash.slice(1));
 	var replacements = getReplacements(query);
 	var expansion;
 
