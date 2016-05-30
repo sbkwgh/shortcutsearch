@@ -57,9 +57,9 @@
 	App = new Router(document.querySelector('#app'));
 
 	App.addRoute('index', __webpack_require__(9));
-	App.addRoute('/faq', __webpack_require__(10));
-	App.addRoute('/search/:query', __webpack_require__(11));
-	App.addRoute('/settings', __webpack_require__(12));
+	App.addRoute('/faq', __webpack_require__(11));
+	App.addRoute('/search/:query', __webpack_require__(12));
+	App.addRoute('/settings', __webpack_require__(13));
 
 	if(!Store.get('defaultSearch').name) {
 		Store.set('defaultSearch', {
@@ -5142,8 +5142,8 @@
 		if(!AddShortcutModal.expansion.length) {
 			AddShortcutModal.errors.expansion = 'Expansion URL must not be empty'
 		}
-		if(!AddShortcutModal.expansion.match("__QUERY__")) {
-			AddShortcutModal.errors.expansion = 'Expansion URL must contain __QUERY__'
+		if(!AddShortcutModal.expansion.match("{query}")) {
+			AddShortcutModal.errors.expansion = 'Expansion URL must contain {query}'
 		}
 		if(!AddShortcutModal.validateUrl(AddShortcutModal.expansion)) {
 			AddShortcutModal.errors.expansion = 'Expansion URL is not valid';
@@ -5153,7 +5153,7 @@
 		if(
 			!AddShortcutModal.shortcut.length ||
 			!AddShortcutModal.expansion.length ||
-			!AddShortcutModal.expansion.match("__QUERY__") ||
+			!AddShortcutModal.expansion.match("{query}") ||
 			!AddShortcutModal.validateUrl(AddShortcutModal.expansion)
 		) { return; }
 
@@ -5184,7 +5184,7 @@
 		'To find the expansion url:' +
 		'<ol><li>Enter a search term on the website you want to add.</li>' +
 		'<li>Look at the address and where you see the search term you entered</li>' +
-		'<li>Replace that text with <b>__QUERY__</b></li></ol>'
+		'<li>Replace that text with <span style="font-size: 0.8rem" class="pre pre-bold">{query}</span></li></ol>'
 	);
 
 	module.exports = AddShortcutModal;
@@ -5416,7 +5416,7 @@
 
 	var Store = __webpack_require__(4);
 	var downloadDefaults = __webpack_require__(8);
-	var confirmBox = __webpack_require__(14);
+	var confirmBox = __webpack_require__(10);
 
 	module.exports = function(templateContainer, templateHTML, data) {
 		var template = Handlebars.compile(templateHTML);
@@ -5516,12 +5516,48 @@
 /* 10 */
 /***/ function(module, exports) {
 
+	var confirmBox = function (message, cb, okColour) {
+		var confirmBoxDiv = document.createElement('div');
+		var template = document.querySelector('script[data-template="confirm-box"]').innerHTML;
+
+		confirmBoxDiv.classList.add('confirm');
+		confirmBoxDiv.innerHTML = Handlebars.compile(template)({'message': message, 'okColour': okColour});
+
+		confirmBoxDiv.close = function() {
+			confirmBoxDiv.classList.add('confirm-close');
+
+			setTimeout(function() {
+				document.body.removeChild(confirmBoxDiv);
+			}, 200)
+		}
+
+		confirmBoxDiv.querySelector('#confirm-button-ok').addEventListener('click', function() {
+			cb(true);
+			confirmBoxDiv.close();
+		});
+		confirmBoxDiv.querySelector('#confirm-button-cancel').addEventListener('click', function() {
+			cb(false);
+			confirmBoxDiv.close();
+		});
+
+		if(document.querySelector('.confirm')) {
+			document.body.removeChild(document.querySelector('.confirm'));
+		}
+		document.body.appendChild(confirmBoxDiv);
+	}
+
+	module.exports = confirmBox;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
 	module.exports = function(templateContainer, templateHTML, data) {
 		templateContainer.innerHTML = templateHTML;
 	};
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(4);
@@ -5539,7 +5575,11 @@
 		var defaultsArr = [];
 
 		for(var key in defaults) {
-			if(!shortcuts[key] && (key.startsWith(shortcutFromQuery) || defaults[key].site.startsWith(siteFromQuery))) {
+			if(
+				!shortcuts[key] &&
+				(key.toLowerCase().startsWith(shortcutFromQuery.toLowerCase()) || 
+				defaults[key].site.toLowerCase().startsWith(siteFromQuery.toLowerCase()))
+			) {
 				defaultsArr.push({
 					shortcut: key,
 					expansion: defaults[key].expansion,
@@ -5549,7 +5589,10 @@
 		}
 
 		for(var key in shortcuts) {
-			if(key.startsWith(shortcutFromQuery) || shortcuts[key].site.startsWith(siteFromQuery)) {
+			if(
+				key.toLowerCase().startsWith(shortcutFromQuery.toLowerCase) ||
+				shortcuts[key].site.toLowerCase().startsWith(siteFromQuery.toLowerCase)
+			) {
 				shortcutsArr.push({
 					'shortcut': key,
 					'expansion': shortcuts[key].expansion,
@@ -5599,11 +5642,11 @@
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var downloadDefaults = __webpack_require__(8);
-	var confirmBox = __webpack_require__(14);
+	var confirmBox = __webpack_require__(10);
 	var Store = __webpack_require__(4);
 
 	module.exports = function(templateContainer, templateHTML, data) {
@@ -5703,43 +5746,6 @@
 			document.querySelector('#settings-default_search-current').innerHTML = selected;
 		}
 	});
-
-/***/ },
-/* 13 */,
-/* 14 */
-/***/ function(module, exports) {
-
-	var confirmBox = function (message, cb, okColour) {
-		var confirmBoxDiv = document.createElement('div');
-		var template = document.querySelector('script[data-template="confirm-box"]').innerHTML;
-
-		confirmBoxDiv.classList.add('confirm');
-		confirmBoxDiv.innerHTML = Handlebars.compile(template)({'message': message, 'okColour': okColour});
-
-		confirmBoxDiv.close = function() {
-			confirmBoxDiv.classList.add('confirm-close');
-
-			setTimeout(function() {
-				document.body.removeChild(confirmBoxDiv);
-			}, 200)
-		}
-
-		confirmBoxDiv.querySelector('#confirm-button-ok').addEventListener('click', function() {
-			cb(true);
-			confirmBoxDiv.close();
-		});
-		confirmBoxDiv.querySelector('#confirm-button-cancel').addEventListener('click', function() {
-			cb(false);
-			confirmBoxDiv.close();
-		});
-
-		if(document.querySelector('.confirm')) {
-			document.body.removeChild(document.querySelector('.confirm'));
-		}
-		document.body.appendChild(confirmBoxDiv);
-	}
-
-	module.exports = confirmBox;
 
 /***/ }
 /******/ ]);

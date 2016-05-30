@@ -80,8 +80,8 @@ AddShortcutModal.el.submit.addEventListener('click', function(ev) {
 	if(!AddShortcutModal.expansion.length) {
 		AddShortcutModal.errors.expansion = 'Expansion URL must not be empty'
 	}
-	if(!AddShortcutModal.expansion.match("__QUERY__")) {
-		AddShortcutModal.errors.expansion = 'Expansion URL must contain __QUERY__'
+	if(!AddShortcutModal.expansion.match("{query}")) {
+		AddShortcutModal.errors.expansion = 'Expansion URL must contain {query}'
 	}
 	if(!AddShortcutModal.validateUrl(AddShortcutModal.expansion)) {
 		AddShortcutModal.errors.expansion = 'Expansion URL is not valid';
@@ -91,7 +91,7 @@ AddShortcutModal.el.submit.addEventListener('click', function(ev) {
 	if(
 		!AddShortcutModal.shortcut.length ||
 		!AddShortcutModal.expansion.length ||
-		!AddShortcutModal.expansion.match("__QUERY__") ||
+		!AddShortcutModal.expansion.match("{query}") ||
 		!AddShortcutModal.validateUrl(AddShortcutModal.expansion)
 	) { return; }
 
@@ -122,7 +122,7 @@ Tooltip.onClick(
 	'To find the expansion url:' +
 	'<ol><li>Enter a search term on the website you want to add.</li>' +
 	'<li>Look at the address and where you see the search term you entered</li>' +
-	'<li>Replace that text with <b>__QUERY__</b></li></ol>'
+	'<li>Replace that text with <span style="font-size: 0.8rem" class="pre pre-bold">{query}</span></li></ol>'
 );
 
 module.exports = AddShortcutModal;

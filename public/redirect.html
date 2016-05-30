@@ -1,32 +1,60 @@
 <script type="text/javascript">
+	function replace(str, query = '', arr = []) {
+		var ret = str;
+
+		(str.match(/{\d+}/g) || []).forEach(function(match) {
+			var index = +match.slice(1, -1) -1;
+
+			ret = ret.replace(match, arr[index] || '');
+		});
+
+		return ret.replace(/{query}/gi, query);
+	}
+
+	function getReplacements(str) {
+		var matches = str.match(/(^|\s+)(![a-z]+)([a-z\|]+)?(\s+|$)/i);
+
+		if(!matches) return null;
+
+		var shortcut = matches[2];
+		var query = str.replace(matches[0], '');
+		var params;
+
+		if(matches[3]) params = matches[3].split('|').slice(1);
+
+		return {shortcut: shortcut, params: params, query: query};
+	}
+
 	function getExpansion(shortcutName) {
 		var shortcut = JSON.parse(localStorage.getItem('shortcuts') || '{}')[shortcutName];
 		var defaultShortcut = JSON.parse(localStorage.getItem('defaults') || '{}')[shortcutName];
 
 		if(shortcut) {
 			return shortcut;
-		} else {
+		} else if(defaultShortcut) {
 			return defaultShortcut;
+		} else {
+			return null;
 		}
 	}
 
-	var shortcut, expansion, search;
-	var URL = decodeURI(location.hash.slice(1));
-
-	if(URL.match(/(?:^|\s)(\![a-z]+)(?=\s|$)/i)) {
-		shortcut = URL.match(/(?:^|\s)(\![a-z]+)(?=\s|$)/i)[1];
-		search = URL.replace(new RegExp('(?:^|\\s)' + shortcut + '(?=\\s|$)', 'i'), '');
-		search = search.trimLeft();
-	} else if(URL.match(/\![a-z]+$/)) {
-		shortcut = URL.match(/\![a-z]+$/i)[0];
-		search = URL.replace(shortcut, '');
+	function getSearchURL(query) {
+		return JSON.parse(localStorage.getItem('defaultSearch')).URL + query;
 	}
 
-	expansion = getExpansion(shortcut);
+	var query = decodeURI(location.hash.slice(1));
+	var replacements = getReplacements(query);
+	var expansion;
 
-	if(!shortcut || !expansion) {
-		location.href = JSON.parse(localStorage.getItem('defaultSearch')).URL + URL;
-	} else if(expansion) {
-		location.href = expansion.expansion.replace('__QUERY__', search);
+	if(replacements === null) {
+		location.href = getSearchURL(query)
+	} else {
+		expansion = getExpansion(replacements.shortcut);
+
+		if(expansion === null) {
+			location.href = getSearchURL(query);
+		} else {
+			location.href = replace(expansion.expansion, replacements.query, replacements.query, replacements.params)
+		}
 	}
 </script>
