@@ -1,26 +1,26 @@
 module.exports = {
 	'!b': {
-		site: 'bing',
+		site: 'Bing',
 		expansion: 'http://www.bing.com/search?q={query}'
 	},
 	'!w': {
-		site: 'wikipedia',
+		site: 'Wikipedia',
 		expansion: 'https://en.wikipedia.org/w/index.php?search={query}'
 	},
 	'!so' : {
-		site: 'stackoverflow',
+		site: 'Stackoverflow',
 		expansion: 'http://stackoverflow.com/search?q={query}'
 	},
 	'!ddg': {
-		site: 'duck duck go',
+		site: 'Duck Duck Go',
 		expansion: 'https://duckduckgo.com/?q={query}'
 	},
 	'!gi': {
-		site: 'google images',
+		site: 'Google images',
 		expansion: 'https://encrypted.google.com/search?q={query}&tbm=isch'
 	},
 	'!wkt': {
-		site: 'wiktionary',
+		site: 'Wiktionary',
 		expansion: 'https://en.wiktionary.org/w/index.php?search={query}&title=Special%3ASearch'
 	},
 	'!bbc': {
