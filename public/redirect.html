@@ -47,14 +47,14 @@
 	var expansion;
 
 	if(replacements === null) {
-		location.href = getSearchURL(query)
+		//location.href = getSearchURL(query)
 	} else {
 		expansion = getExpansion(replacements.shortcut);
 
 		if(expansion === null) {
-			location.href = getSearchURL(query);
+			//location.href = getSearchURL(query);
 		} else {
-			location.href = replace(expansion.expansion, replacements.query, replacements.query, replacements.params)
+			//location.href = replace(expansion.expansion, replacements.query, replacements.query, replacements.params)
 		}
 	}
 </script>
