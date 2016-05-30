@@ -13,7 +13,11 @@ module.exports = function(templateContainer, templateHTML, data) {
 	var defaultsArr = [];
 
 	for(var key in defaults) {
-		if(!shortcuts[key] && (key.startsWith(shortcutFromQuery) || defaults[key].site.startsWith(siteFromQuery))) {
+		if(
+			!shortcuts[key] &&
+			(key.toLowerCase().startsWith(shortcutFromQuery.toLowerCase()) || 
+			defaults[key].site.toLowerCase().startsWith(siteFromQuery.toLowerCase()))
+		) {
 			defaultsArr.push({
 				shortcut: key,
 				expansion: defaults[key].expansion,
@@ -23,7 +27,10 @@ module.exports = function(templateContainer, templateHTML, data) {
 	}
 
 	for(var key in shortcuts) {
-		if(key.startsWith(shortcutFromQuery) || shortcuts[key].site.startsWith(siteFromQuery)) {
+		if(
+			key.toLowerCase().startsWith(shortcutFromQuery.toLowerCase) ||
+			shortcuts[key].site.toLowerCase().startsWith(siteFromQuery.toLowerCase)
+		) {
 			shortcutsArr.push({
 				'shortcut': key,
 				'expansion': shortcuts[key].expansion,
