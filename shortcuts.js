@@ -45,6 +45,6 @@ module.exports = {
 	},
 	'!gt': {
 		site: 'Google Translate',
-		expansion:'https://translate.google.com/#{1}/{2}/{query}'
+		expansion:'https://translate.google.com/#{1~|auto}/{2|en}/{query}'
 	}
 };

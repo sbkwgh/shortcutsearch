@@ -1,12 +1,23 @@
 <script type="text/javascript">
 	function replace(str, query = '', arr = []) {
 		var ret = str;
+		var matches = str.match(/{\d+(\~?\\|[^}]+)?}/gi);
 
-		(str.match(/{\d+}/g) || []).forEach(function(match) {
-			var index = +match.slice(1, -1) -1;
+		(matches || []).forEach(function(match) {
+			var index = +match.slice(1, -1).split(/~?\|/)[0] -1;
+			var alternative = match.slice(1, -1).split(/~?\|/)[1];
 
-			ret = ret.replace(match, arr[index] || '');
+			if(alternative && !arr[index]) {
+				ret = ret.replace(match, alternative);
+			} else if(alternative && (!arr[index+1] && ((index+1) < matches.length)) && match.match(/~\|/)) {
+				ret = ret.replace(match, alternative);
+				ret = ret.replace(matches[index+1], arr[index]);
+			} else {
+				ret = ret.replace(match, arr[index] || '');
+			}
 		});
+
+		console.log(ret.replace(/{query}/gi, query))
 
 		return ret.replace(/{query}/gi, query);
 	}
@@ -54,7 +65,7 @@
 		if(expansion === null) {
 			location.href = getSearchURL(query);
 		} else {
-			location.href = replace(expansion.expansion, replacements.query, replacements.params)
+			/*location.href = */replace(expansion.expansion, replacements.query, replacements.params)
 		}
 	}
 </script>
