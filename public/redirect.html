@@ -17,8 +17,6 @@
 			}
 		});
 
-		console.log(ret.replace(/{query}/gi, query))
-
 		return ret.replace(/{query}/gi, query);
 	}
 
@@ -65,7 +63,7 @@
 		if(expansion === null) {
 			location.href = getSearchURL(query);
 		} else {
-			/*location.href = */replace(expansion.expansion, replacements.query, replacements.params)
+			location.href = replace(expansion.expansion, replacements.query, replacements.params)
 		}
 	}
 </script>
