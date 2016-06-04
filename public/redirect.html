@@ -48,10 +48,10 @@
 	}
 
 	function getSearchURL(query) {
-		return JSON.parse(localStorage.getItem('defaultSearch')).URL + query;
+		return JSON.parse(localStorage.getItem('defaultSearch')).URL || 'https://encrypted.google.com/search?hl=en&q=' + query;
 	}
 
-	var query = decodeURI(location.hash.slice(1).replace('+', ' '));
+	var query = decodeURI(location.hash.slice(1)/*.replace('+', ' ')*/);
 	var replacements = getReplacements(query);
 	var expansion;
 
