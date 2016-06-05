@@ -23,16 +23,25 @@
 	function getReplacements(str) {
 		var matches = str.match(/(^|\s+)(![a-z]+)([a-z\|]+)?(\s+|$)/i);
 		var end = str.slice(str.lastIndexOf('!', str.length));
+		var shortcut, query, params;
 
 		if(!matches && !end.match('!')) return null;
 
-		if(end.match('!') && !matches) shortcut = end;
+		if(end.match('!') && !matches) {
+			shortcut = end.split('|')[0];
+			query = str.replace(end, '');
 
-		var shortcut = matches[2];
-		var query = str.replace(matches[0], '');
-		var params;
+			if(end.split('|').slice(1).length) {
+				params = end.split('|').slice(1);
+			}
+		} else {
+			shortcut = matches[2];
+			query = str.replace(matches[0], ' ');
 
-		if(matches[3]) params = matches[3].split('|').slice(1);
+			if(matches[3]) params = matches[3].split('|').slice(1);
+		}
+
+		if(str.trim()[0] === '!') query = query.trimLeft();
 
 		return {shortcut: shortcut, params: params, query: query};
 	}
