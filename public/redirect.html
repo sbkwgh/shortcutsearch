@@ -48,7 +48,7 @@
 	}
 
 	function getSearchURL(query) {
-		return JSON.parse(localStorage.getItem('defaultSearch')).URL || 'https://encrypted.google.com/search?hl=en&q=' + query;
+		return JSON.parse(localStorage.getItem('defaultSearch') || '{}').URL || 'https://encrypted.google.com/search?hl=en&q=' + query;
 	}
 
 	var query = decodeURI(location.hash.slice(1)/*.replace('+', ' ')*/);
