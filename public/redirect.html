@@ -22,8 +22,11 @@
 
 	function getReplacements(str) {
 		var matches = str.match(/(^|\s+)(![a-z]+)([a-z\|]+)?(\s+|$)/i);
+		var end = str.slice(str.lastIndexOf('!', str.length));
 
-		if(!matches) return null;
+		if(!matches && !end.match('!')) return null;
+
+		if(end.match('!') && !matches) shortcut = end;
 
 		var shortcut = matches[2];
 		var query = str.replace(matches[0], '');
